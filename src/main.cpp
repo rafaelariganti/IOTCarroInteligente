@@ -80,7 +80,8 @@ void conectaMQTT() {
   if (millis() - ultimaTentativaMqtt < 5000) return;
   ultimaTentativaMqtt = millis();
 
-  String id = "carro-" + String((uint32_t)ESP.getEfuseMac(), HEX);
+  // ID aleatório: no Wokwi o MAC é igual para todos e IDs repetidos derrubam a conexão
+  String id = "carro-" + String((uint32_t)esp_random(), HEX);
   // Last Will: se o ESP32 cair, o broker publica "offline"
   if (mqtt.connect(id.c_str(), NULL, NULL, T_STATUS, 0, true, "offline")) {
     mqtt.publish(T_STATUS, "online", true);
